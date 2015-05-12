@@ -20,7 +20,7 @@ public class MediaPlayerMain extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-		primaryStage.setTitle("Media Player");
+		primaryStage.setTitle("Embedded Media Player");
         Group root = new Group();
         mediaPlayer.setAutoPlay(true);      
         Scene scene = new Scene(root, 800, 600);
