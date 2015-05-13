@@ -9,8 +9,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -30,7 +32,7 @@ public class MediaControl extends BorderPane {
 	private Slider volumeSlider;
 	private HBox mediaBar;
 
-	private HBox toolbar;
+	//private HBox toolbar;
 	private VBox Box;
 
 	public MediaControl(final MediaPlayer mp) {
@@ -38,19 +40,7 @@ public class MediaControl extends BorderPane {
 		setStyle("-fx-background-color: white;");
 		mediaView = new MediaView(mediaPlayer);
 		BorderPane mvPane = new BorderPane() {};
-
-		//set fill
 		mvPane.setCenter(mediaView);
-		
-		//final DoubleProperty width = mediaView.fitWidthProperty();
-		//final DoubleProperty height = mediaView.fitHeightProperty();
-		//width.bind(Bindings.selectDouble(mediaView.sceneProperty(), "width"));
-		//height.bind(Bindings.selectDouble(mediaView.sceneProperty(), "height"));
-		
-		//width.bind(Bindings.selectDouble(mediaView.parentProperty(), "width"));
-		//height.bind(Bindings.selectDouble(mediaView.parentProperty(), "height"));
-
-		
 		mvPane.setStyle("-fx-background-color: black;");
 		setCenter(mvPane);
 		setFill();
@@ -119,7 +109,10 @@ public class MediaControl extends BorderPane {
 		playTime.setMinWidth(50);
 		mediaBar.getChildren().add(playTime);
 		
-
+		//Add Separator
+		Separator sep1 = new Separator(Orientation.VERTICAL);
+		mediaBar.getChildren().add(sep1);
+		
 		// Add the volume label
 		Label volumeLabel = new Label("Vol: ");
 		mediaBar.getChildren().add(volumeLabel);
@@ -187,8 +180,8 @@ public class MediaControl extends BorderPane {
 		}
 	}
 
-	private HBox toolBar() {
-		return toolbar;
-	}
+	//private HBox toolBar() {
+	//	return toolbar;
+	//}
 	
 }
