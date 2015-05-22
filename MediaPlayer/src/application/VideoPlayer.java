@@ -65,7 +65,7 @@ public class VideoPlayer extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Coppy Movie Player");
 		primaryStage.setScene(InitScene(primaryStage));
-		//primaryStage.setResizable(false);
+		primaryStage.setResizable(false);
 		//primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
 		primaryStage.show();
 		setFill();
