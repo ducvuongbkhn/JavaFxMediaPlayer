@@ -14,12 +14,16 @@ import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
@@ -38,7 +42,7 @@ public class VideoPlayer extends Application {
 	private Slider timeSlider;
 	private Label playTime;
 	private Slider volumeSlider;
-	private boolean FlagFull = false;
+	//private boolean FlagFull = false;
 
 	private VBox vbox = new VBox();	
 	
@@ -78,7 +82,7 @@ public class VideoPlayer extends Application {
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
 		vbox.setPadding(new Insets(5, 10, 5, 10));
 		vbox.getChildren().add(mediaBar());
-		//vbox.getChildren().add(toolBar(primaryStage));
+		vbox.getChildren().add(toolBar(primaryStage));
 		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
 		root.getChildren().add(view);
 		root.getChildren().add(vbox);
@@ -238,6 +242,100 @@ public class VideoPlayer extends Application {
 			else 
 				return String.format("%02d:%02d", elapsedMinutes, elapsedSeconds);
 		}
+	}
+	
+	private HBox toolBar(Stage primaryStage) {
+		HBox toolbar;
+		toolbar = new HBox(btnOpen(primaryStage));
+		toolbar.setAlignment(Pos.CENTER);
+		toolbar.alignmentProperty().isBound();
+		toolbar.setPadding(new Insets(5, 10, 5, 10));
+		toolbar.setStyle("-fx-background-color: rgba(153, 255, 255, .1);");
+		BorderPane.setAlignment(toolbar, Pos.CENTER);
+		return toolbar;
+	}
+	
+	private Button btnOpen(Stage primaryStage) {
+		Button btnOpen = new Button("Open");
+		btnOpen.setStyle(ButtonStyle);
+		btnOpen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FileChooser fc = new FileChooser();
+					fc.getExtensionFilters().add(new ExtensionFilter("Media File", "*.flv", "*.mp4", "*.mpeg", "*.*"));
+					File file = fc.showOpenDialog(null);
+					String path = file.getAbsolutePath();
+					path = path.replace("\\", "/");
+					media = new Media(new File(path).toURI().toString());
+					player.stop();
+					player = new MediaPlayer(media);
+					player.setAutoPlay(true);
+					view.setMediaPlayer(player);
+					
+					
+					player.currentTimeProperty().addListener(new InvalidationListener() {
+						public void invalidated(Observable ov) {
+							updateValues();
+						}
+					});
+					
+					timeSlider.valueProperty().addListener(new InvalidationListener() {
+						public void invalidated(Observable ov) {
+							if (timeSlider.isValueChanging()) {
+								player.seek(duration.multiply(timeSlider.getValue() / 100.0));
+							}
+						}
+					});
+					
+					volumeSlider.valueProperty().addListener(new InvalidationListener() {
+						public void invalidated(Observable ov) {
+							if (volumeSlider.isValueChanging())
+								player.setVolume(volumeSlider.getValue() / 100.0);  
+						}
+					});
+					
+					player.setOnReady(new Runnable() {
+						@Override
+						public void run() {
+							duration = player.getMedia().getDuration();
+							updateValues();
+							updateSize(primaryStage);
+							primaryStage.setMinWidth(w);
+							primaryStage.setMinHeight(h);
+							vbox.setMinSize(w, 100);
+							vbox.setTranslateY(h - 100);
+
+							slideOut.getKeyFrames().addAll(
+									new KeyFrame(new Duration(0),
+											new KeyValue(vbox.translateYProperty(), h-100),
+											new KeyValue(vbox.opacityProperty(), 0.9)
+											),
+											new KeyFrame(new Duration(300),
+													new KeyValue(vbox.translateYProperty(), h),
+													new KeyValue(vbox.opacityProperty(), 0.0)
+													)
+									);
+							slideIn.getKeyFrames().addAll(
+									new KeyFrame(new Duration(0),
+											new KeyValue(vbox.translateYProperty(), h),
+											new KeyValue(vbox.opacityProperty(), 0.0)
+											),
+											new KeyFrame(new Duration(300),
+													new KeyValue(vbox.translateYProperty(), h-100),
+													new KeyValue(vbox.opacityProperty(), 0.9)
+													)
+									);
+						}
+					});
+					
+				}
+
+			}
+		});
+		return btnOpen;
 	}
 	
 	public void setFill() {
