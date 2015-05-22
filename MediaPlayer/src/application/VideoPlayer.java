@@ -50,8 +50,8 @@ public class VideoPlayer extends Application {
 	
 	private double w;
 	private double h;
-	Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
-	//public static Media media = new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv");
+	//Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
+	public static Media media = new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv");
 	MediaPlayer player = new MediaPlayer(media);
 	MediaView view = new MediaView(player);
 	
@@ -65,7 +65,7 @@ public class VideoPlayer extends Application {
 	public void start(Stage primaryStage) {
 		primaryStage.setTitle("Coppy Movie Player");
 		primaryStage.setScene(InitScene(primaryStage));
-		//primaryStage.setResizable(false);
+		primaryStage.setResizable(false);
 		//primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
 		primaryStage.show();
 		setFill();
@@ -266,7 +266,7 @@ public class VideoPlayer extends Application {
 	
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
-		toolbar = new HBox(btnOpen(primaryStage));
+		toolbar = new HBox(btnOpen(primaryStage),btnPlay(), btnPause(), btnBack(), btnForward(), btnReload(), btnStop(), btnFullscreen(primaryStage));
 		toolbar.setAlignment(Pos.CENTER);
 		toolbar.alignmentProperty().isBound();
 		toolbar.setPadding(new Insets(5, 10, 5, 10));
@@ -356,6 +356,126 @@ public class VideoPlayer extends Application {
 			}
 		});
 		return btnOpen;
+	}
+	
+	private Button btnPlay() {
+		Button btnPlay = new Button("Play");
+		btnPlay.setStyle(ButtonStyle);
+		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.play();
+				}
+
+			}
+		});
+		return btnPlay;
+	}
+	
+	private Button btnPause() {
+		Button btnPause = new Button("Pause");
+		btnPause.setStyle(ButtonStyle);
+		//btnOpen.setGraphic(imgOpen);
+		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.pause();
+				}
+
+			}
+		});
+		return btnPause;
+	}
+	
+	private Button btnBack() {
+		Button btnBack = new Button("Back");
+		//btnBack.setStyle("-fx-background-color: white;");
+		btnBack.setCursor(Cursor.HAND);
+		btnBack.setStyle(ButtonStyle);
+		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getCurrentTime().divide(1.5));
+				}
+
+			}
+		});
+
+		return btnBack;
+	}
+	
+	private Button btnForward() {
+		Button btnForward = new Button("Forward");
+		btnForward.setStyle(ButtonStyle);
+		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getCurrentTime().multiply(1.5));
+				}
+
+			}
+		});
+		return btnForward;
+	}
+	
+	private Button btnStop() {
+		Button btnStop = new Button("Stop");
+		btnStop.setStyle(ButtonStyle);
+		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.stop();
+				}
+
+			}
+		});
+		return btnStop;
+	}
+	
+	private Button btnReload() {
+		Button btnReload = new Button("Reload");
+		btnReload.setStyle(ButtonStyle);
+		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getStartTime());
+				}
+
+			}
+		});
+		return btnReload;
+	}
+	
+	private Button btnFullscreen(Stage primaryStage) {
+		Button btnFullscreen = new Button("Full");
+		btnFullscreen.setStyle(ButtonStyle);
+		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FlagFull = !FlagFull;
+					primaryStage.setFullScreen(FlagFull);
+					updateSize(primaryStage);
+				}
+
+			}
+		});
+		return btnFullscreen;
 	}
 	
 	public void setFill() {
