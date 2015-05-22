@@ -45,6 +45,7 @@ public class VideoPlayer extends Application {
 	//private boolean FlagFull = false;
 	private boolean FlagPlay = true;
 
+	
 	private VBox vbox = new VBox();	
 	
 	private double w;
