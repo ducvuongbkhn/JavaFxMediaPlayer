@@ -38,16 +38,19 @@ public class VideoPlayer extends Application {
 	private Slider timeSlider;
 	private Label playTime;
 	private Slider volumeSlider;
-	private HBox mediaBar;
-	private HBox toolbar;
 	private boolean FlagFull = false;
 
+	private VBox vbox = new VBox();	
+	
 	private double w;
 	private double h;
 	Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
 	//public static Media media = new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv");
 	MediaPlayer player = new MediaPlayer(media);
 	MediaView view = new MediaView(player);
+	
+	final Timeline slideIn = new Timeline();
+	final Timeline slideOut = new Timeline();
 	
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
 	String ButtonStyle = "-fx-background-color: red;";
@@ -72,7 +75,6 @@ public class VideoPlayer extends Application {
 		Group root = new Group();
 		BorderPane mvPane = new BorderPane(root);
 		mvPane.setStyle("-fx-background-color: black;");
-		VBox vbox = new VBox();	
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
 		vbox.setPadding(new Insets(5, 10, 5, 10));
 		vbox.getChildren().add(mediaBar());
@@ -82,8 +84,6 @@ public class VideoPlayer extends Application {
 		root.getChildren().add(vbox);
 		
 		//hieu ung cho timeline
-		final Timeline slideIn = new Timeline();
-		final Timeline slideOut = new Timeline();
 		root.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -133,7 +133,8 @@ public class VideoPlayer extends Application {
 	}
 	
 	private HBox mediaBar() {
-		//timeline
+		//time line
+		HBox mediaBar;
 		mediaBar = new HBox();
 		mediaBar.setAlignment(Pos.CENTER);
 		mediaBar.setPadding(new Insets(5, 10, 5, 10));
