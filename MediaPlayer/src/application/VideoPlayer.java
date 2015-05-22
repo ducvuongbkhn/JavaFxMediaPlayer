@@ -50,8 +50,8 @@ public class VideoPlayer extends Application {
 	
 	private double w;
 	private double h;
-	Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
-	//public static Media media = new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv");
+	//Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
+	public static Media media = new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv");
 	MediaPlayer player = new MediaPlayer(media);
 	MediaView view = new MediaView(player);
 	
