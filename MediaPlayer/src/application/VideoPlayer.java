@@ -444,6 +444,22 @@ public class VideoPlayer extends Application {
 		return btnStop;
 	}
 	
+	private Button btnReload() {
+		Button btnReload = new Button("Reload");
+		btnReload.setStyle(ButtonStyle);
+		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getStartTime());
+				}
+
+			}
+		});
+		return btnReload;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
