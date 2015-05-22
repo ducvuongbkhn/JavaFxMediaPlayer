@@ -266,7 +266,7 @@ public class VideoPlayer extends Application {
 	
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
-		toolbar = new HBox(btnOpen(primaryStage));
+		toolbar = new HBox(btnOpen(primaryStage),btnPlay(), btnPause(), btnBack(), btnForward(), btnReload(), btnStop(), btnFullscreen(primaryStage));
 		toolbar.setAlignment(Pos.CENTER);
 		toolbar.alignmentProperty().isBound();
 		toolbar.setPadding(new Insets(5, 10, 5, 10));
