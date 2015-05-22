@@ -392,6 +392,26 @@ public class VideoPlayer extends Application {
 		});
 		return btnPause;
 	}
+	
+	private Button btnBack() {
+		Button btnBack = new Button("Back");
+		//btnBack.setStyle("-fx-background-color: white;");
+		btnBack.setCursor(Cursor.HAND);
+		btnBack.setStyle(ButtonStyle);
+		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getCurrentTime().divide(1.5));
+				}
+
+			}
+		});
+
+		return btnBack;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
