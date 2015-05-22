@@ -428,6 +428,22 @@ public class VideoPlayer extends Application {
 		return btnForward;
 	}
 	
+	private Button btnStop() {
+		Button btnStop = new Button("Stop");
+		btnStop.setStyle(ButtonStyle);
+		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.stop();
+				}
+
+			}
+		});
+		return btnStop;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
