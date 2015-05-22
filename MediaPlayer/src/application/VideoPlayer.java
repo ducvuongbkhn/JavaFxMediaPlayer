@@ -375,6 +375,23 @@ public class VideoPlayer extends Application {
 		return btnPlay;
 	}
 	
+	private Button btnPause() {
+		Button btnPause = new Button("Pause");
+		btnPause.setStyle(ButtonStyle);
+		//btnOpen.setGraphic(imgOpen);
+		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.pause();
+				}
+
+			}
+		});
+		return btnPause;
+	}
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
