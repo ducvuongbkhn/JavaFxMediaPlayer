@@ -412,6 +412,22 @@ public class VideoPlayer extends Application {
 		return btnBack;
 	}
 	
+	private Button btnForward() {
+		Button btnForward = new Button("Forward");
+		btnForward.setStyle(ButtonStyle);
+		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getCurrentTime().multiply(1.5));
+				}
+
+			}
+		});
+		return btnForward;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
