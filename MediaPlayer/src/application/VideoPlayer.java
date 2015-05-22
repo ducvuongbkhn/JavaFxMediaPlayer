@@ -33,7 +33,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
 
-public class MediaPlayerMain extends Application {
+public class VideoPlayer extends Application {
 	private Duration duration;
 	private Slider timeSlider;
 	private Label playTime;
