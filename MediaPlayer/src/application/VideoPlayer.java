@@ -43,6 +43,7 @@ public class VideoPlayer extends Application {
 	private Label playTime;
 	private Slider volumeSlider;
 	//private boolean FlagFull = false;
+	private boolean FlagPlay = true;
 
 	private VBox vbox = new VBox();	
 	
@@ -86,6 +87,24 @@ public class VideoPlayer extends Application {
 		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
 		root.getChildren().add(view);
 		root.getChildren().add(vbox);
+		
+		//click media view play/pause
+		view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					if (FlagPlay) {
+					FlagPlay = !FlagPlay;
+					player.pause();
+					}
+					else {
+						FlagPlay = !FlagPlay;
+						player.play();
+					}
+				}
+			}
+		});
 		
 		//hieu ung cho timeline
 		root.setOnMouseEntered(new EventHandler<MouseEvent>() {
