@@ -1,5 +1,5 @@
 package application;
-	
+
 import java.io.File;
 
 import javafx.animation.KeyFrame;
@@ -14,9 +14,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -34,35 +31,39 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 public class VideoPlayer extends Application {
+
 	private Duration duration;
 	private Slider timeSlider;
 	private Label playTime;
 	private Slider volumeSlider;
-	//private boolean FlagFull = false;
-	private boolean FlagPlay = true;
+	private boolean FlagFull = false;
 
-	
-	private VBox vbox = new VBox();	
-	
 	private double w;
 	private double h;
 	Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
-	//public static Media media = new Media("http://download.oracle.com/otndocs/products/javafx/oow2010-2.flv");
 	MediaPlayer player = new MediaPlayer(media);
 	MediaView view = new MediaView(player);
 	
 	final Timeline slideIn = new Timeline();
 	final Timeline slideOut = new Timeline();
+	VBox vbox = new VBox();	
+	
 	
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
-	String ButtonStyle = "-fx-background-color: red;";
-	
+	String ButtonStyle = "-fx-border-color: black; -fx-background-color: rgba(153, 255, 255, .1);";
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle("Coppy Movie Player");
 		primaryStage.setScene(InitScene(primaryStage));
 		//primaryStage.setResizable(false);
@@ -73,41 +74,23 @@ public class VideoPlayer extends Application {
 		
 	}
 	
-	public static void main(String[] args) {
-		launch(args);
-	}
 	
 	private Scene InitScene(Stage primaryStage) {
 		Group root = new Group();
 		BorderPane mvPane = new BorderPane(root);
 		mvPane.setStyle("-fx-background-color: black;");
+		
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
 		vbox.setPadding(new Insets(5, 10, 5, 10));
-		vbox.getChildren().add(mediaBar());
+		vbox.getChildren().add(mediaBar(player));
 		vbox.getChildren().add(toolBar(primaryStage));
-		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
+		//Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
+		Scene scene = new Scene(mvPane, 800, 600, Color.BLACK);
 		root.getChildren().add(view);
 		root.getChildren().add(vbox);
 		
-		//click media view play/pause
-		view.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					if (FlagPlay) {
-					FlagPlay = !FlagPlay;
-					player.pause();
-					}
-					else {
-						FlagPlay = !FlagPlay;
-						player.play();
-					}
-				}
-			}
-		});
-		
 		//hieu ung cho timeline
+		
 		root.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -125,6 +108,7 @@ public class VideoPlayer extends Application {
 			@Override
 			public void run() {
 				duration = player.getMedia().getDuration();
+				updateValues();
 				updateSize(primaryStage);
 				primaryStage.setMinWidth(w);
 				primaryStage.setMinHeight(h);
@@ -155,8 +139,8 @@ public class VideoPlayer extends Application {
 		});
 		return scene;
 	}
-	
-	private HBox mediaBar() {
+
+	private HBox mediaBar(MediaPlayer player) {
 		//time line
 		HBox mediaBar;
 		mediaBar = new HBox();
@@ -217,7 +201,7 @@ public class VideoPlayer extends Application {
 		return mediaBar;
 	}
 	
-	protected void updateValues() {
+	private void updateValues() {
 		if (playTime != null && timeSlider != null && volumeSlider != null) {
 			Platform.runLater(new Runnable() {
 				@SuppressWarnings("deprecation")
@@ -235,38 +219,42 @@ public class VideoPlayer extends Application {
 		}
 	}
 
-	private static String formatTime(Duration elapsed, Duration duration) {
-		int intElapsed = (int) Math.floor(elapsed.toSeconds());
-		int elapsedHours = intElapsed / (60 * 60);
-		if (elapsedHours > 0)
-			intElapsed -= elapsedHours * 60 * 60;
-		int elapsedMinutes = intElapsed / 60;
-		int elapsedSeconds = intElapsed - elapsedHours * 60 * 60  - elapsedMinutes * 60;
+	
+	public static String formatTime(Duration elapsed, Duration duration) {
+        int intElapsed = (int) Math.floor(elapsed.toSeconds());
+        int elapsedHours = intElapsed / (60 * 60);
+        int elapsedMinutes = intElapsed / 60 - elapsedHours * 60;
+        int elapsedSeconds = intElapsed - elapsedHours * 60 * 60
+                - elapsedMinutes * 60;
 
-		if (duration.greaterThan(Duration.ZERO)) {
-			int intDuration = (int) Math.floor(duration.toSeconds());
-			int durationHours = intDuration / (60 * 60);
-			if (durationHours > 0) {
-				intDuration -= durationHours * 60 * 60;
-			}
-			int durationMinutes = intDuration / 60;
-			int durationSeconds = intDuration - durationHours * 60 * 60 - durationMinutes * 60;
-			if (durationHours > 0)
-				return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds, durationHours, durationMinutes, durationSeconds);
-			else 
-				return String.format("%02d:%02d/%02d:%02d", elapsedMinutes, elapsedSeconds, durationMinutes, durationSeconds);
-		} 
-		else {
-			if (elapsedHours > 0)
-				return String.format("%d:%02d:%02d", elapsedHours, elapsedMinutes, elapsedSeconds);
-			else 
-				return String.format("%02d:%02d", elapsedMinutes, elapsedSeconds);
-		}
-	}
+        if (duration.greaterThan(Duration.ZERO)) {
+            int intDuration = (int) Math.floor(duration.toSeconds());
+            int durationHours = intDuration / (60 * 60);
+            int durationMinutes = intDuration / 60 - durationHours * 60;
+            int durationSeconds = intDuration - durationHours * 60 * 60
+                    - durationMinutes * 60;
+            if (durationHours > 0) {
+                return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours,
+                        elapsedMinutes, elapsedSeconds, durationHours,
+                        durationMinutes, durationSeconds);
+            } else {
+                return String.format("%02d:%02d/%02d:%02d", elapsedMinutes,
+                        elapsedSeconds, durationMinutes, durationSeconds);
+            }
+        } else {
+            if (elapsedHours > 0) {
+                return String.format("%d:%02d:%02d", elapsedHours,
+                        elapsedMinutes, elapsedSeconds);
+            } else {
+                return String.format("%02d:%02d", elapsedMinutes,
+                        elapsedSeconds);
+            }
+        }
+    }
 	
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
-		toolbar = new HBox(btnOpen(primaryStage));
+		toolbar = new HBox(btnOpen(primaryStage),btnPlay(), btnPause(), btnBack(), btnForward(), btnReload(), btnStop(), btnFullscreen(primaryStage));
 		toolbar.setAlignment(Pos.CENTER);
 		toolbar.alignmentProperty().isBound();
 		toolbar.setPadding(new Insets(5, 10, 5, 10));
@@ -274,7 +262,6 @@ public class VideoPlayer extends Application {
 		BorderPane.setAlignment(toolbar, Pos.CENTER);
 		return toolbar;
 	}
-	
 	private Button btnOpen(Stage primaryStage) {
 		Button btnOpen = new Button("Open");
 		btnOpen.setStyle(ButtonStyle);
@@ -358,6 +345,126 @@ public class VideoPlayer extends Application {
 		return btnOpen;
 	}
 	
+	private Button btnPlay() {
+		Button btnPlay = new Button("Play");
+		btnPlay.setStyle(ButtonStyle);
+		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.play();
+				}
+
+			}
+		});
+		return btnPlay;
+	}
+
+	private Button btnPause() {
+		Button btnPause = new Button("Pause");
+		btnPause.setStyle(ButtonStyle);
+		//btnOpen.setGraphic(imgOpen);
+		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.pause();
+				}
+
+			}
+		});
+		return btnPause;
+	}
+	
+	private Button btnBack() {
+		Button btnBack = new Button("Back");
+		//btnBack.setStyle("-fx-background-color: white;");
+		//btnBack.setCursor(Cursor.HAND);
+		btnBack.setStyle(ButtonStyle);
+		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getCurrentTime().divide(1.5));
+				}
+
+			}
+		});
+
+		return btnBack;
+	}
+	
+	private Button btnForward() {
+		Button btnForward = new Button("Forward");
+		btnForward.setStyle(ButtonStyle);
+		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getCurrentTime().multiply(1.5));
+				}
+
+			}
+		});
+		return btnForward;
+	}
+	
+	private Button btnStop() {
+		Button btnStop = new Button("Stop");
+		btnStop.setStyle(ButtonStyle);
+		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.stop();
+				}
+
+			}
+		});
+		return btnStop;
+	}
+	
+	private Button btnReload() {
+		Button btnReload = new Button("Reload");
+		btnReload.setStyle(ButtonStyle);
+		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.seek(player.getStartTime());
+				}
+
+			}
+		});
+		return btnReload;
+	}
+	
+	private Button btnFullscreen(Stage primaryStage) {
+		Button btnFullscreen = new Button("Full");
+		btnFullscreen.setStyle(ButtonStyle);
+		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FlagFull = !FlagFull;
+					primaryStage.setFullScreen(FlagFull);
+					updateSize(primaryStage);
+				}
+
+			}
+		});
+		return btnFullscreen;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
@@ -365,9 +472,9 @@ public class VideoPlayer extends Application {
 		height.bind(Bindings.selectDouble(view.sceneProperty(), "height"));
 	}
 	
-	
 	private void updateSize(Stage primaryStage) {
 		w = primaryStage.getScene().getWidth();
 		h = primaryStage.getScene().getHeight();
 	}
+	
 }
