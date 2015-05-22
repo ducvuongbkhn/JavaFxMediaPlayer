@@ -460,6 +460,24 @@ public class VideoPlayer extends Application {
 		return btnReload;
 	}
 	
+	private Button btnFullscreen(Stage primaryStage) {
+		Button btnFullscreen = new Button("Full");
+		btnFullscreen.setStyle(ButtonStyle);
+		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					FlagFull = !FlagFull;
+					primaryStage.setFullScreen(FlagFull);
+					updateSize(primaryStage);
+				}
+
+			}
+		});
+		return btnFullscreen;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
