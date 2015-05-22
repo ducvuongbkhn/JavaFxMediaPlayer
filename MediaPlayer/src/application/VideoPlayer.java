@@ -358,6 +358,23 @@ public class VideoPlayer extends Application {
 		return btnOpen;
 	}
 	
+	private Button btnPlay() {
+		Button btnPlay = new Button("Play");
+		btnPlay.setStyle(ButtonStyle);
+		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				//left
+				if (event.getButton() == MouseButton.PRIMARY) {
+					player.play();
+				}
+
+			}
+		});
+		return btnPlay;
+	}
+	
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
