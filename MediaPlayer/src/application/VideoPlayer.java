@@ -42,7 +42,6 @@ public class VideoPlayer extends Application {
 	private Slider timeSlider;
 	private Label playTime;
 	private Slider volumeSlider;
-	private boolean FlagFull = false;
 
 	private double w;
 	private double h;
@@ -64,18 +63,19 @@ public class VideoPlayer extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Coppy Movie Player");
-		primaryStage.setScene(InitScene(primaryStage));
+		primaryStage.setTitle("Movie Player");
+		primaryStage.setScene(ConfigScene(primaryStage));
 		//primaryStage.setResizable(false);
 		//primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
+		effectDoubleClicked(primaryStage);
 		primaryStage.show();
 		setFill();
 		player.play();
 		
 	}
 	
-	
-	private Scene InitScene(Stage primaryStage) {
+	//Configuration scene for primary stage  
+	private Scene ConfigScene(Stage primaryStage) {
 		Group root = new Group();
 		BorderPane mvPane = new BorderPane(root);
 		mvPane.setStyle("-fx-background-color: black;");
@@ -84,13 +84,12 @@ public class VideoPlayer extends Application {
 		vbox.setPadding(new Insets(5, 10, 5, 10));
 		vbox.getChildren().add(mediaBar(player));
 		vbox.getChildren().add(toolBar(primaryStage));
-		//Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
-		Scene scene = new Scene(mvPane, 800, 600, Color.BLACK);
+		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
+		//Scene scene = new Scene(mvPane, 800, 600, Color.BLACK);
 		root.getChildren().add(view);
 		root.getChildren().add(vbox);
 		
-		//hieu ung cho timeline
-		
+		//effect for tool bar and media bar
 		root.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
@@ -140,6 +139,7 @@ public class VideoPlayer extends Application {
 		return scene;
 	}
 
+	//create media bar for slider
 	private HBox mediaBar(MediaPlayer player) {
 		//time line
 		HBox mediaBar;
@@ -201,6 +201,7 @@ public class VideoPlayer extends Application {
 		return mediaBar;
 	}
 	
+	//update value for time play and slider
 	private void updateValues() {
 		if (playTime != null && timeSlider != null && volumeSlider != null) {
 			Platform.runLater(new Runnable() {
@@ -219,7 +220,7 @@ public class VideoPlayer extends Application {
 		}
 	}
 
-	
+	//format time for time play
 	public static String formatTime(Duration elapsed, Duration duration) {
         int intElapsed = (int) Math.floor(elapsed.toSeconds());
         int elapsedHours = intElapsed / (60 * 60);
@@ -252,6 +253,7 @@ public class VideoPlayer extends Application {
         }
     }
 	
+	//create tool bar button
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
 		toolbar = new HBox(btnOpen(primaryStage),btnPlay(), btnPause(), btnBack(), btnForward(), btnReload(), btnStop(), btnFullscreen(primaryStage));
@@ -262,6 +264,8 @@ public class VideoPlayer extends Application {
 		BorderPane.setAlignment(toolbar, Pos.CENTER);
 		return toolbar;
 	}
+	
+	//button Open file
 	private Button btnOpen(Stage primaryStage) {
 		Button btnOpen = new Button("Open");
 		btnOpen.setStyle(ButtonStyle);
@@ -345,6 +349,7 @@ public class VideoPlayer extends Application {
 		return btnOpen;
 	}
 	
+	//button play
 	private Button btnPlay() {
 		Button btnPlay = new Button("Play");
 		btnPlay.setStyle(ButtonStyle);
@@ -362,6 +367,7 @@ public class VideoPlayer extends Application {
 		return btnPlay;
 	}
 
+	//button pause
 	private Button btnPause() {
 		Button btnPause = new Button("Pause");
 		btnPause.setStyle(ButtonStyle);
@@ -380,6 +386,7 @@ public class VideoPlayer extends Application {
 		return btnPause;
 	}
 	
+	//button back
 	private Button btnBack() {
 		Button btnBack = new Button("Back");
 		//btnBack.setStyle("-fx-background-color: white;");
@@ -399,6 +406,7 @@ public class VideoPlayer extends Application {
 		return btnBack;
 	}
 	
+	//button forward
 	private Button btnForward() {
 		Button btnForward = new Button("Forward");
 		btnForward.setStyle(ButtonStyle);
@@ -415,6 +423,7 @@ public class VideoPlayer extends Application {
 		return btnForward;
 	}
 	
+	//button stop
 	private Button btnStop() {
 		Button btnStop = new Button("Stop");
 		btnStop.setStyle(ButtonStyle);
@@ -431,6 +440,7 @@ public class VideoPlayer extends Application {
 		return btnStop;
 	}
 	
+	//button reload
 	private Button btnReload() {
 		Button btnReload = new Button("Reload");
 		btnReload.setStyle(ButtonStyle);
@@ -447,6 +457,7 @@ public class VideoPlayer extends Application {
 		return btnReload;
 	}
 	
+	//button full screen
 	private Button btnFullscreen(Stage primaryStage) {
 		Button btnFullscreen = new Button("Full");
 		btnFullscreen.setStyle(ButtonStyle);
@@ -455,9 +466,11 @@ public class VideoPlayer extends Application {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					FlagFull = !FlagFull;
-					primaryStage.setFullScreen(FlagFull);
-					updateSize(primaryStage);
+					if (primaryStage.isFullScreen()) {
+                        primaryStage.setFullScreen(false);
+                    } else {
+                        primaryStage.setFullScreen(true);
+                    }
 				}
 
 			}
@@ -465,6 +478,7 @@ public class VideoPlayer extends Application {
 		return btnFullscreen;
 	}
 	
+	//media view fill primary stage
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
 		final DoubleProperty height = view.fitHeightProperty();
@@ -472,9 +486,25 @@ public class VideoPlayer extends Application {
 		height.bind(Bindings.selectDouble(view.sceneProperty(), "height"));
 	}
 	
+	//update size for slider
 	private void updateSize(Stage primaryStage) {
 		w = primaryStage.getScene().getWidth();
 		h = primaryStage.getScene().getHeight();
+	}
+	
+	//effect double click
+	private void effectDoubleClicked(Stage primaryStage) {
+		view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
+            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+                if (mouseEvent.getClickCount() == 2) {
+                    if (primaryStage.isFullScreen()) {
+                        primaryStage.setFullScreen(false);
+                    } else {
+                        primaryStage.setFullScreen(true);
+                    }
+                }
+            }
+        });
 	}
 	
 }
