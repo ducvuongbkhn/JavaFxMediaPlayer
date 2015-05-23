@@ -466,11 +466,11 @@ public class VideoPlayer extends Application {
 			@Override
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
-					if (primaryStage.isFullScreen()) {
-                        primaryStage.setFullScreen(false);
-                    } else {
-                        primaryStage.setFullScreen(true);
-                    }
+					primaryStage.setFullScreen(!primaryStage.isFullScreen());
+					if (primaryStage.isFullScreen()) 
+						btnFullscreen.setText("Not Full");
+					else
+						btnFullscreen.setText("Full");
 				}
 
 			}
@@ -497,11 +497,11 @@ public class VideoPlayer extends Application {
 		view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
             if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
                 if (mouseEvent.getClickCount() == 2) {
-                    if (primaryStage.isFullScreen()) {
-                        primaryStage.setFullScreen(false);
-                    } else {
-                        primaryStage.setFullScreen(true);
-                    }
+                        primaryStage.setFullScreen(!primaryStage.isFullScreen());        
+                        if (primaryStage.isFullScreen()) 
+    						btnFullscreen(primaryStage).setText("Not Full");
+    					else
+    						btnFullscreen(primaryStage).setText("Full");
                 }
             }
         });
