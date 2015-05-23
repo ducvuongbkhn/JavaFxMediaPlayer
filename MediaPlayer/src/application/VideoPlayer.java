@@ -45,15 +45,16 @@ public class VideoPlayer extends Application {
 
 	private double w;
 	private double h;
-	Media media = new Media(new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4").toURI().toString());
+	File mediafile = new File("E:\\Entertainment\\Video\\Walt Disney\\Peter Pan 2.MP4");
+	Media media = new Media(mediafile.toURI().toString());
 	MediaPlayer player = new MediaPlayer(media);
 	MediaView view = new MediaView(player);
-	
+
 	final Timeline slideIn = new Timeline();
 	final Timeline slideOut = new Timeline();
 	VBox vbox = new VBox();	
-	
-	
+
+
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
 	String ButtonStyle = "-fx-border-color: black; -fx-background-color: rgba(153, 255, 255, .1);";
 
@@ -63,31 +64,32 @@ public class VideoPlayer extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Movie Player");
+		primaryStage.setTitle(mediafile.getName());
 		primaryStage.setScene(ConfigScene(primaryStage));
 		//primaryStage.setResizable(false);
 		//primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
+		//primaryStage.setFullScreen(true);
 		effectDoubleClicked(primaryStage);
 		primaryStage.show();
 		setFill();
 		player.play();
-		
+
 	}
-	
+
 	//Configuration scene for primary stage  
 	private Scene ConfigScene(Stage primaryStage) {
 		Group root = new Group();
-		BorderPane mvPane = new BorderPane(root);
-		mvPane.setStyle("-fx-background-color: black;");
-		
 		vbox.setAlignment(Pos.BOTTOM_CENTER);
 		vbox.setPadding(new Insets(5, 10, 5, 10));
 		vbox.getChildren().add(mediaBar(player));
 		vbox.getChildren().add(toolBar(primaryStage));
-		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
-		//Scene scene = new Scene(mvPane, 800, 600, Color.BLACK);
 		root.getChildren().add(view);
 		root.getChildren().add(vbox);
+		
+		BorderPane mvPane = new BorderPane(root);
+		mvPane.setStyle("-fx-background-color: black;");
+		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
+		//Scene scene = new Scene(mvPane, 800, 600, Color.BLACK);
 		
 		//effect for tool bar and media bar
 		root.setOnMouseEntered(new EventHandler<MouseEvent>() {
@@ -102,7 +104,7 @@ public class VideoPlayer extends Application {
 				slideOut.play();
 			}
 		});
-		
+
 		player.setOnReady(new Runnable() {
 			@Override
 			public void run() {
@@ -200,7 +202,7 @@ public class VideoPlayer extends Application {
 		mediaBar.getChildren().add(volumeSlider);
 		return mediaBar;
 	}
-	
+
 	//update value for time play and slider
 	private void updateValues() {
 		if (playTime != null && timeSlider != null && volumeSlider != null) {
@@ -222,37 +224,37 @@ public class VideoPlayer extends Application {
 
 	//format time for time play
 	public static String formatTime(Duration elapsed, Duration duration) {
-        int intElapsed = (int) Math.floor(elapsed.toSeconds());
-        int elapsedHours = intElapsed / (60 * 60);
-        int elapsedMinutes = intElapsed / 60 - elapsedHours * 60;
-        int elapsedSeconds = intElapsed - elapsedHours * 60 * 60
-                - elapsedMinutes * 60;
+		int intElapsed = (int) Math.floor(elapsed.toSeconds());
+		int elapsedHours = intElapsed / (60 * 60);
+		int elapsedMinutes = intElapsed / 60 - elapsedHours * 60;
+		int elapsedSeconds = intElapsed - elapsedHours * 60 * 60
+				- elapsedMinutes * 60;
 
-        if (duration.greaterThan(Duration.ZERO)) {
-            int intDuration = (int) Math.floor(duration.toSeconds());
-            int durationHours = intDuration / (60 * 60);
-            int durationMinutes = intDuration / 60 - durationHours * 60;
-            int durationSeconds = intDuration - durationHours * 60 * 60
-                    - durationMinutes * 60;
-            if (durationHours > 0) {
-                return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours,
-                        elapsedMinutes, elapsedSeconds, durationHours,
-                        durationMinutes, durationSeconds);
-            } else {
-                return String.format("%02d:%02d/%02d:%02d", elapsedMinutes,
-                        elapsedSeconds, durationMinutes, durationSeconds);
-            }
-        } else {
-            if (elapsedHours > 0) {
-                return String.format("%d:%02d:%02d", elapsedHours,
-                        elapsedMinutes, elapsedSeconds);
-            } else {
-                return String.format("%02d:%02d", elapsedMinutes,
-                        elapsedSeconds);
-            }
-        }
-    }
-	
+		if (duration.greaterThan(Duration.ZERO)) {
+			int intDuration = (int) Math.floor(duration.toSeconds());
+			int durationHours = intDuration / (60 * 60);
+			int durationMinutes = intDuration / 60 - durationHours * 60;
+			int durationSeconds = intDuration - durationHours * 60 * 60
+					- durationMinutes * 60;
+			if (durationHours > 0) {
+				return String.format("%d:%02d:%02d/%d:%02d:%02d", elapsedHours,
+						elapsedMinutes, elapsedSeconds, durationHours,
+						durationMinutes, durationSeconds);
+			} else {
+				return String.format("%02d:%02d/%02d:%02d", elapsedMinutes,
+						elapsedSeconds, durationMinutes, durationSeconds);
+			}
+		} else {
+			if (elapsedHours > 0) {
+				return String.format("%d:%02d:%02d", elapsedHours,
+						elapsedMinutes, elapsedSeconds);
+			} else {
+				return String.format("%02d:%02d", elapsedMinutes,
+						elapsedSeconds);
+			}
+		}
+	}
+
 	//create tool bar button
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
@@ -264,7 +266,7 @@ public class VideoPlayer extends Application {
 		BorderPane.setAlignment(toolbar, Pos.CENTER);
 		return toolbar;
 	}
-	
+
 	//button Open file
 	private Button btnOpen(Stage primaryStage) {
 		Button btnOpen = new Button("Open");
@@ -285,14 +287,15 @@ public class VideoPlayer extends Application {
 					player = new MediaPlayer(media);
 					player.setAutoPlay(true);
 					view.setMediaPlayer(player);
-					
-					
+					primaryStage.setTitle(file.getName());
+
+
 					player.currentTimeProperty().addListener(new InvalidationListener() {
 						public void invalidated(Observable ov) {
 							updateValues();
 						}
 					});
-					
+
 					timeSlider.valueProperty().addListener(new InvalidationListener() {
 						public void invalidated(Observable ov) {
 							if (timeSlider.isValueChanging()) {
@@ -300,14 +303,14 @@ public class VideoPlayer extends Application {
 							}
 						}
 					});
-					
+
 					volumeSlider.valueProperty().addListener(new InvalidationListener() {
 						public void invalidated(Observable ov) {
 							if (volumeSlider.isValueChanging())
 								player.setVolume(volumeSlider.getValue() / 100.0);  
 						}
 					});
-					
+
 					player.setOnReady(new Runnable() {
 						@Override
 						public void run() {
@@ -341,14 +344,14 @@ public class VideoPlayer extends Application {
 									);
 						}
 					});
-					
+
 				}
 
 			}
 		});
 		return btnOpen;
 	}
-	
+
 	//button play
 	private Button btnPlay() {
 		Button btnPlay = new Button("Play");
@@ -385,7 +388,7 @@ public class VideoPlayer extends Application {
 		});
 		return btnPause;
 	}
-	
+
 	//button back
 	private Button btnBack() {
 		Button btnBack = new Button("Back");
@@ -405,7 +408,7 @@ public class VideoPlayer extends Application {
 
 		return btnBack;
 	}
-	
+
 	//button forward
 	private Button btnForward() {
 		Button btnForward = new Button("Forward");
@@ -422,7 +425,7 @@ public class VideoPlayer extends Application {
 		});
 		return btnForward;
 	}
-	
+
 	//button stop
 	private Button btnStop() {
 		Button btnStop = new Button("Stop");
@@ -439,7 +442,7 @@ public class VideoPlayer extends Application {
 		});
 		return btnStop;
 	}
-	
+
 	//button reload
 	private Button btnReload() {
 		Button btnReload = new Button("Reload");
@@ -456,7 +459,7 @@ public class VideoPlayer extends Application {
 		});
 		return btnReload;
 	}
-	
+
 	//button full screen
 	private Button btnFullscreen(Stage primaryStage) {
 		Button btnFullscreen = new Button("Full");
@@ -467,17 +470,21 @@ public class VideoPlayer extends Application {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());
-					if (primaryStage.isFullScreen()) 
+					if (primaryStage.isFullScreen()) {
 						btnFullscreen.setText("Not Full");
-					else
+						slideOut.play();
+					}
+					else {
 						btnFullscreen.setText("Full");
+						slideIn.play();
+					}
 				}
 
 			}
 		});
 		return btnFullscreen;
 	}
-	
+
 	//media view fill primary stage
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
@@ -485,26 +492,24 @@ public class VideoPlayer extends Application {
 		width.bind(Bindings.selectDouble(view.sceneProperty(), "width"));
 		height.bind(Bindings.selectDouble(view.sceneProperty(), "height"));
 	}
-	
+
 	//update size for slider
 	private void updateSize(Stage primaryStage) {
 		w = primaryStage.getScene().getWidth();
 		h = primaryStage.getScene().getHeight();
 	}
-	
+
 	//effect double click
 	private void effectDoubleClicked(Stage primaryStage) {
 		view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
-            if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-                if (mouseEvent.getClickCount() == 2) {
-                        primaryStage.setFullScreen(!primaryStage.isFullScreen());        
-                        if (primaryStage.isFullScreen()) 
-    						btnFullscreen(primaryStage).setText("Not Full");
-    					else
-    						btnFullscreen(primaryStage).setText("Full");
-                }
-            }
-        });
+			if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+				if (mouseEvent.getClickCount() == 2) {
+					primaryStage.setFullScreen(!primaryStage.isFullScreen());                     
+					if (primaryStage.isFullScreen()) 
+						slideOut.play();
+				}
+			}
+		});
 	}
-	
+
 }
