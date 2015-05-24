@@ -34,6 +34,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class VideoPlayer extends Application {
@@ -53,6 +54,8 @@ public class VideoPlayer extends Application {
 	final Timeline slideIn = new Timeline();
 	final Timeline slideOut = new Timeline();
 	VBox vbox = new VBox();	
+	private boolean FlagPlay;
+	private String status;
 
 
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
@@ -66,8 +69,8 @@ public class VideoPlayer extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle(mediafile.getName());
 		primaryStage.setScene(ConfigScene(primaryStage));
-		//primaryStage.setResizable(false);
-		//primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
+		primaryStage.setResizable(false);
+		primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
 		//primaryStage.setFullScreen(true);
 		effectDoubleClicked(primaryStage);
 		primaryStage.show();
@@ -511,5 +514,16 @@ public class VideoPlayer extends Application {
 			}
 		});
 	}
+	
+	//update status
+		private String updateStatus() {
+			if (FlagPlay)
+				status = "Play";
+			else
+				status = "Pause";
+			System.out.println(status);
+			return status;
+		}
+
 
 }
