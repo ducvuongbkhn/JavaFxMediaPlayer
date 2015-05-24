@@ -73,9 +73,12 @@ public class VideoPlayer extends Application {
 		primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
 		//primaryStage.setFullScreen(true);
 		effectDoubleClicked(primaryStage);
+		effectViewClicked();
 		primaryStage.show();
 		setFill();
 		player.play();
+		FlagPlay = true;
+		updateStatus();
 
 	}
 
@@ -366,6 +369,8 @@ public class VideoPlayer extends Application {
 				//left
 				if (event.getButton() == MouseButton.PRIMARY) {
 					player.play();
+					FlagPlay = true;
+					updateStatus();
 				}
 
 			}
@@ -385,6 +390,8 @@ public class VideoPlayer extends Application {
 				//left
 				if (event.getButton() == MouseButton.PRIMARY) {
 					player.pause();
+					FlagPlay = false;
+					updateStatus();
 				}
 
 			}
@@ -439,6 +446,7 @@ public class VideoPlayer extends Application {
 			public void handle(MouseEvent event) {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					player.stop();
+					status = "Stop";
 				}
 
 			}
@@ -514,6 +522,29 @@ public class VideoPlayer extends Application {
 			}
 		});
 	}
+	
+	//effect click media view
+		private void effectViewClicked() {
+			view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
+				
+				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+					if (FlagPlay) 
+					{
+						player.pause();
+						FlagPlay = false;
+						updateStatus();
+					}
+					else 
+					{
+						player.play();
+						FlagPlay = true;
+						updateStatus();
+					}
+						
+				}
+			});
+		}
+		
 	
 	//update status
 		private String updateStatus() {
