@@ -21,6 +21,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -60,8 +62,18 @@ public class VideoPlayer extends Application {
 
 
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
-	String ButtonStyle = "-fx-border-color: black; -fx-background-color: rgba(153, 255, 255, .1);";
+	String ButtonStyle = "-fx-background-color: rgba(153, 255, 255, 0);";
 	Cursor buttonCursor = Cursor.HAND;
+
+	//image
+	private ImageView imgOpen = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Open.png")));
+	private ImageView imgBack = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Back.png")));
+	private ImageView imgForward = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Forward.png")));
+	private ImageView imgPlay = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Play.png")));
+	private ImageView imgPause = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Pause.png")));
+	private ImageView imgReload = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Reload.png")));
+	private ImageView imgStop = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Stop.png")));
+	private ImageView imgFullscreen = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Fullscreen.png")));
 
 	public static void main(String[] args) {
 		launch(args);
@@ -94,12 +106,12 @@ public class VideoPlayer extends Application {
 		vbox.getChildren().add(toolBar(primaryStage));
 		root.getChildren().add(view);
 		root.getChildren().add(vbox);
-		
+
 		BorderPane mvPane = new BorderPane(root);
 		mvPane.setStyle("-fx-background-color: black;");
 		Scene scene = new Scene(mvPane, 1067, 600, Color.BLACK);
 		//Scene scene = new Scene(mvPane, 800, 600, Color.BLACK);
-		
+
 		//effect for tool bar and media bar
 		root.setOnMouseEntered(new EventHandler<MouseEvent>() {
 			@Override
@@ -269,7 +281,7 @@ public class VideoPlayer extends Application {
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
 		toolbar = new HBox(btnOpen(primaryStage),btnPlay(), btnPause(), btnBack(), btnForward(), btnReload(), btnStop(), btnFullscreen(primaryStage));
-		toolbar.setAlignment(Pos.CENTER_LEFT);
+		toolbar.setAlignment(Pos.CENTER);
 		toolbar.getChildren().addAll(lblStatus);
 		toolbar.alignmentProperty().isBound();
 		toolbar.setPadding(new Insets(5, 10, 5, 10));
@@ -280,16 +292,19 @@ public class VideoPlayer extends Application {
 
 	//button Open file
 	private Button btnOpen(Stage primaryStage) {
-		Button btnOpen = new Button("Open");
+		Button btnOpen = new Button();
 		btnOpen.setStyle(ButtonStyle);
 		btnOpen.setCursor(buttonCursor);
 		btnOpen.setTooltip(new Tooltip("Open"));
+		btnOpen.setGraphic(imgOpen);
+
 		btnOpen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
 				//left
-				if (event.getButton() == MouseButton.PRIMARY) {
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					FileChooser fc = new FileChooser();
 					fc.getExtensionFilters().add(new ExtensionFilter("Media File", "*.flv", "*.mp4", "*.mpeg", "*.*"));
 					File file = fc.showOpenDialog(null);
@@ -311,7 +326,8 @@ public class VideoPlayer extends Application {
 
 					timeSlider.valueProperty().addListener(new InvalidationListener() {
 						public void invalidated(Observable ov) {
-							if (timeSlider.isValueChanging()) {
+							if (timeSlider.isValueChanging()) 
+							{
 								player.seek(duration.multiply(timeSlider.getValue() / 100.0));
 							}
 						}
@@ -367,10 +383,12 @@ public class VideoPlayer extends Application {
 
 	//button play
 	private Button btnPlay() {
-		Button btnPlay = new Button("Play");
+		Button btnPlay = new Button();
 		btnPlay.setStyle(ButtonStyle);
 		btnPlay.setCursor(buttonCursor);
 		btnPlay.setTooltip(new Tooltip("Play"));
+		btnPlay.setGraphic(imgPlay);
+
 		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -389,11 +407,12 @@ public class VideoPlayer extends Application {
 
 	//button pause
 	private Button btnPause() {
-		Button btnPause = new Button("Pause");
+		Button btnPause = new Button();
 		btnPause.setStyle(ButtonStyle);
 		btnPause.setCursor(buttonCursor);
 		btnPause.setTooltip(new Tooltip("Pause"));
-		//btnOpen.setGraphic(imgOpen);
+		btnPause.setGraphic(imgPause);
+
 		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -412,15 +431,17 @@ public class VideoPlayer extends Application {
 
 	//button back
 	private Button btnBack() {
-		Button btnBack = new Button("Back");
+		Button btnBack = new Button();
 		btnBack.setStyle(ButtonStyle);
 		btnBack.setCursor(buttonCursor);
 		btnBack.setTooltip(new Tooltip("Back"));
+		btnBack.setGraphic(imgBack);
+
 		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				
+
 				if (event.getButton() == MouseButton.PRIMARY) 
 				{
 					player.seek(player.getCurrentTime().divide(1.5));
@@ -434,15 +455,17 @@ public class VideoPlayer extends Application {
 
 	//button forward
 	private Button btnForward() {
-		Button btnForward = new Button("Forward");
+		Button btnForward = new Button();
 		btnForward.setStyle(ButtonStyle);
 		btnForward.setCursor(buttonCursor);
 		btnForward.setTooltip(new Tooltip("Forward"));
+		btnForward.setGraphic(imgForward);
+
 		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				
+
 				if (event.getButton() == MouseButton.PRIMARY) 
 				{
 					player.seek(player.getCurrentTime().multiply(1.5));
@@ -455,10 +478,12 @@ public class VideoPlayer extends Application {
 
 	//button stop
 	private Button btnStop() {
-		Button btnStop = new Button("Stop");
+		Button btnStop = new Button();
 		btnStop.setStyle(ButtonStyle);
 		btnStop.setCursor(buttonCursor);
 		btnStop.setTooltip(new Tooltip("Stop"));
+		btnStop.setGraphic(imgStop);
+
 		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -477,15 +502,17 @@ public class VideoPlayer extends Application {
 
 	//button reload
 	private Button btnReload() {
-		Button btnReload = new Button("Reload");
+		Button btnReload = new Button();
 		btnReload.setStyle(ButtonStyle);
 		btnReload.setCursor(buttonCursor);
 		btnReload.setTooltip(new Tooltip("Reload"));
+		btnReload.setGraphic(imgReload);
+
 		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				
+
 				if (event.getButton() == MouseButton.PRIMARY) 
 				{
 					player.seek(player.getStartTime());
@@ -498,14 +525,17 @@ public class VideoPlayer extends Application {
 
 	//button full screen
 	private Button btnFullscreen(Stage primaryStage) {
-		Button btnFullscreen = new Button("Full");
+		Button btnFullscreen = new Button();
 		btnFullscreen.setStyle(ButtonStyle);
 		btnFullscreen.setCursor(buttonCursor);
 		btnFullscreen.setTooltip(new Tooltip("Full Screen"));
+		btnFullscreen.setGraphic(imgFullscreen);
+
 		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
+
 				if (event.getButton() == MouseButton.PRIMARY) 
 				{
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());
@@ -540,8 +570,10 @@ public class VideoPlayer extends Application {
 
 	//effect double click
 	private void effectDoubleClicked(Stage primaryStage) {
+
 		view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
-			if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+			if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) 
+			{
 				if (mouseEvent.getClickCount() == 2) 
 				{
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());                     
@@ -559,34 +591,37 @@ public class VideoPlayer extends Application {
 			}
 		});
 	}
-	
+
 	//effect click media view
-		private void effectViewClicked() {
-			view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
-				
-				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-					if (FlagPlay) 
-					{
-						player.pause();
-						FlagPlay = false;
-						setStatus("Pause");
-					}
-					else 
-					{
-						player.play();
-						FlagPlay = true;
-						setStatus("Play");
-					}
-						
+	private void effectViewClicked() {
+		view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
+
+			if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
+
+				if (FlagPlay) 
+				{
+					player.pause();
+					FlagPlay = false;
+					setStatus("Pause");
 				}
-			});
-		}
-		
-	
+				else 
+				{
+					player.play();
+					FlagPlay = true;
+					setStatus("Play");
+				}
+
+			}
+		});
+	}
+
+
 	//update status
-		private void setStatus(String status) {
-			lblStatus.setText("     Status : " + status);
-			lblStatus.setTextFill(TextColor);
-		}
+	private void setStatus(String status) {
+		lblStatus.setText("  Status : " + status);
+		lblStatus.setTextFill(TextColor);
+		lblStatus.setPrefSize(100, 30);
+		lblStatus.setStyle("-fx-border-color: red; -fx-background-color: rgba(153, 255, 255, 0.1);");
+	}
 
 }
