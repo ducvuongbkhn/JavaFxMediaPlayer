@@ -20,6 +20,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -281,6 +282,7 @@ public class VideoPlayer extends Application {
 		Button btnOpen = new Button("Open");
 		btnOpen.setStyle(ButtonStyle);
 		btnOpen.setCursor(buttonCursor);
+		btnOpen.setTooltip(new Tooltip("Open"));
 		btnOpen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -367,6 +369,7 @@ public class VideoPlayer extends Application {
 		Button btnPlay = new Button("Play");
 		btnPlay.setStyle(ButtonStyle);
 		btnPlay.setCursor(buttonCursor);
+		btnPlay.setTooltip(new Tooltip("Play"));
 		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -388,6 +391,7 @@ public class VideoPlayer extends Application {
 		Button btnPause = new Button("Pause");
 		btnPause.setStyle(ButtonStyle);
 		btnPause.setCursor(buttonCursor);
+		btnPause.setTooltip(new Tooltip("Pause"));
 		//btnOpen.setGraphic(imgOpen);
 		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -410,6 +414,7 @@ public class VideoPlayer extends Application {
 		Button btnBack = new Button("Back");
 		btnBack.setStyle(ButtonStyle);
 		btnBack.setCursor(buttonCursor);
+		btnBack.setTooltip(new Tooltip("Back"));
 		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -431,6 +436,7 @@ public class VideoPlayer extends Application {
 		Button btnForward = new Button("Forward");
 		btnForward.setStyle(ButtonStyle);
 		btnForward.setCursor(buttonCursor);
+		btnForward.setTooltip(new Tooltip("Forward"));
 		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -451,6 +457,7 @@ public class VideoPlayer extends Application {
 		Button btnStop = new Button("Stop");
 		btnStop.setStyle(ButtonStyle);
 		btnStop.setCursor(buttonCursor);
+		btnStop.setTooltip(new Tooltip("Stop"));
 		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -472,6 +479,7 @@ public class VideoPlayer extends Application {
 		Button btnReload = new Button("Reload");
 		btnReload.setStyle(ButtonStyle);
 		btnReload.setCursor(buttonCursor);
+		btnReload.setTooltip(new Tooltip("Reload"));
 		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -492,6 +500,7 @@ public class VideoPlayer extends Application {
 		Button btnFullscreen = new Button("Full");
 		btnFullscreen.setStyle(ButtonStyle);
 		btnFullscreen.setCursor(buttonCursor);
+		btnFullscreen.setTooltip(new Tooltip("Full Screen"));
 		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
