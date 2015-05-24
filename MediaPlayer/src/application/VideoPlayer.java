@@ -56,7 +56,7 @@ public class VideoPlayer extends Application {
 	final Timeline slideOut = new Timeline();
 	VBox vbox = new VBox();	
 	private boolean FlagPlay;
-	private String status;
+	private Label lblStatus = new Label();
 
 
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
@@ -81,7 +81,7 @@ public class VideoPlayer extends Application {
 		player.play();
 		view.setCursor(Cursor.HAND);
 		FlagPlay = true;
-		updateStatus();
+		setStatus("Play");
 
 	}
 
@@ -269,7 +269,8 @@ public class VideoPlayer extends Application {
 	private HBox toolBar(Stage primaryStage) {
 		HBox toolbar;
 		toolbar = new HBox(btnOpen(primaryStage),btnPlay(), btnPause(), btnBack(), btnForward(), btnReload(), btnStop(), btnFullscreen(primaryStage));
-		toolbar.setAlignment(Pos.CENTER);
+		toolbar.setAlignment(Pos.CENTER_LEFT);
+		toolbar.getChildren().addAll(lblStatus);
 		toolbar.alignmentProperty().isBound();
 		toolbar.setPadding(new Insets(5, 10, 5, 10));
 		toolbar.setStyle("-fx-background-color: rgba(153, 255, 255, .1);");
@@ -378,7 +379,7 @@ public class VideoPlayer extends Application {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					player.play();
 					FlagPlay = true;
-					updateStatus();
+					setStatus("Play");
 				}
 
 			}
@@ -401,7 +402,7 @@ public class VideoPlayer extends Application {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					player.pause();
 					FlagPlay = false;
-					updateStatus();
+					setStatus("Pause");
 				}
 
 			}
@@ -466,7 +467,7 @@ public class VideoPlayer extends Application {
 				if (event.getButton() == MouseButton.PRIMARY) 
 				{
 					player.stop();
-					status = "Stop";
+					setStatus("Stopped");
 				}
 
 			}
@@ -510,12 +511,10 @@ public class VideoPlayer extends Application {
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());
 					if (primaryStage.isFullScreen()) 
 					{
-						btnFullscreen.setText("Not Full");
 						slideOut.play();
 					}
 					else 
 					{
-						btnFullscreen.setText("Full");
 						slideIn.play();
 					}
 				}
@@ -570,13 +569,13 @@ public class VideoPlayer extends Application {
 					{
 						player.pause();
 						FlagPlay = false;
-						updateStatus();
+						setStatus("Pause");
 					}
 					else 
 					{
 						player.play();
 						FlagPlay = true;
-						updateStatus();
+						setStatus("Play");
 					}
 						
 				}
@@ -585,14 +584,9 @@ public class VideoPlayer extends Application {
 		
 	
 	//update status
-		private String updateStatus() {
-			if (FlagPlay)
-				status = "Play";
-			else
-				status = "Pause";
-			System.out.println(status);
-			return status;
+		private void setStatus(String status) {
+			lblStatus.setText("     Status : " + status);
+			lblStatus.setTextFill(TextColor);
 		}
-
 
 }
