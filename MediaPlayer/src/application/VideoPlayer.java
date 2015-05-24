@@ -60,6 +60,7 @@ public class VideoPlayer extends Application {
 
 	Color TextColor = Color.rgb(255, 255, 255, 0.5);
 	String ButtonStyle = "-fx-border-color: black; -fx-background-color: rgba(153, 255, 255, .1);";
+	Cursor buttonCursor = Cursor.HAND;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -199,6 +200,7 @@ public class VideoPlayer extends Application {
 		volumeSlider.setPrefWidth(70);
 		volumeSlider.setMaxWidth(Region.USE_PREF_SIZE);
 		volumeSlider.setMinWidth(30);
+		volumeSlider.setCursor(Cursor.HAND);
 		volumeSlider.valueProperty().addListener(new InvalidationListener() {
 			public void invalidated(Observable ov) {
 				if (volumeSlider.isValueChanging())
@@ -277,6 +279,7 @@ public class VideoPlayer extends Application {
 	private Button btnOpen(Stage primaryStage) {
 		Button btnOpen = new Button("Open");
 		btnOpen.setStyle(ButtonStyle);
+		btnOpen.setCursor(buttonCursor);
 		btnOpen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -362,6 +365,7 @@ public class VideoPlayer extends Application {
 	private Button btnPlay() {
 		Button btnPlay = new Button("Play");
 		btnPlay.setStyle(ButtonStyle);
+		btnPlay.setCursor(buttonCursor);
 		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
@@ -382,6 +386,7 @@ public class VideoPlayer extends Application {
 	private Button btnPause() {
 		Button btnPause = new Button("Pause");
 		btnPause.setStyle(ButtonStyle);
+		btnPause.setCursor(buttonCursor);
 		//btnOpen.setGraphic(imgOpen);
 		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -402,14 +407,15 @@ public class VideoPlayer extends Application {
 	//button back
 	private Button btnBack() {
 		Button btnBack = new Button("Back");
-		//btnBack.setStyle("-fx-background-color: white;");
-		//btnBack.setCursor(Cursor.HAND);
 		btnBack.setStyle(ButtonStyle);
+		btnBack.setCursor(buttonCursor);
 		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+				
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					player.seek(player.getCurrentTime().divide(1.5));
 				}
 
@@ -423,11 +429,14 @@ public class VideoPlayer extends Application {
 	private Button btnForward() {
 		Button btnForward = new Button("Forward");
 		btnForward.setStyle(ButtonStyle);
+		btnForward.setCursor(buttonCursor);
 		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+				
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					player.seek(player.getCurrentTime().multiply(1.5));
 				}
 
@@ -440,11 +449,14 @@ public class VideoPlayer extends Application {
 	private Button btnStop() {
 		Button btnStop = new Button("Stop");
 		btnStop.setStyle(ButtonStyle);
+		btnStop.setCursor(buttonCursor);
 		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
-			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+			public void handle(MouseEvent event)
+			{
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					player.stop();
 					status = "Stop";
 				}
@@ -458,11 +470,14 @@ public class VideoPlayer extends Application {
 	private Button btnReload() {
 		Button btnReload = new Button("Reload");
 		btnReload.setStyle(ButtonStyle);
+		btnReload.setCursor(buttonCursor);
 		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+				
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					player.seek(player.getStartTime());
 				}
 
@@ -475,17 +490,21 @@ public class VideoPlayer extends Application {
 	private Button btnFullscreen(Stage primaryStage) {
 		Button btnFullscreen = new Button("Full");
 		btnFullscreen.setStyle(ButtonStyle);
+		btnFullscreen.setCursor(buttonCursor);
 		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
 			@Override
 			public void handle(MouseEvent event) {
-				if (event.getButton() == MouseButton.PRIMARY) {
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());
-					if (primaryStage.isFullScreen()) {
+					if (primaryStage.isFullScreen()) 
+					{
 						btnFullscreen.setText("Not Full");
 						slideOut.play();
 					}
-					else {
+					else 
+					{
 						btnFullscreen.setText("Full");
 						slideIn.play();
 					}
@@ -514,7 +533,8 @@ public class VideoPlayer extends Application {
 	private void effectDoubleClicked(Stage primaryStage) {
 		view.addEventFilter(MouseEvent.MOUSE_PRESSED, (mouseEvent) -> {
 			if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
-				if (mouseEvent.getClickCount() == 2) {
+				if (mouseEvent.getClickCount() == 2) 
+				{
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());                     
 					if (primaryStage.isFullScreen()) 
 						slideOut.play();
