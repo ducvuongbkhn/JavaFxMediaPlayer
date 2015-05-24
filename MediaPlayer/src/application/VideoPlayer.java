@@ -58,11 +58,14 @@ public class VideoPlayer extends Application {
 	final Timeline slideOut = new Timeline();
 	VBox vbox = new VBox();	
 	private boolean FlagPlay;
+	private boolean VolumeFlag;
 	private Label lblStatus = new Label();
 
 
-	Color TextColor = Color.rgb(255, 255, 255, 0.5);
+	//Color TextColor = Color.rgb(255, 255, 255, 0.5);
+	Color TextColor = Color.WHITE;
 	String ButtonStyle = "-fx-background-color: rgba(153, 255, 255, 0);";
+	String ToolStyle = "-fx-background-color: rgba(0, 0, 0, .7);";
 	Cursor buttonCursor = Cursor.HAND;
 
 	//image
@@ -74,7 +77,11 @@ public class VideoPlayer extends Application {
 	private ImageView imgReload = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Reload.png")));
 	private ImageView imgStop = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Stop.png")));
 	private ImageView imgFullscreen = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Fullscreen.png")));
+	private ImageView imgVolume = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Volume.png")));
+	private ImageView imgMute = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Mute.png")));
 
+	Button btnVolume = new Button("", imgVolume);
+	
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -82,6 +89,7 @@ public class VideoPlayer extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		primaryStage.setTitle(mediafile.getName());
+		primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/Icon/Logo.png")));
 		primaryStage.setScene(ConfigScene(primaryStage));
 		primaryStage.setResizable(false);
 		primaryStage.initStyle(StageStyle.UTILITY);  //HIDDEn
@@ -93,6 +101,7 @@ public class VideoPlayer extends Application {
 		player.play();
 		view.setCursor(Cursor.HAND);
 		FlagPlay = true;
+		VolumeFlag = true;
 		setStatus("Play");
 
 	}
@@ -169,7 +178,7 @@ public class VideoPlayer extends Application {
 		mediaBar = new HBox();
 		mediaBar.setAlignment(Pos.CENTER);
 		mediaBar.setPadding(new Insets(5, 10, 5, 10));
-		mediaBar.setStyle("-fx-background-color: rgba(153, 255, 255, .1);"); //transparent
+		mediaBar.setStyle(ToolStyle);
 		player.currentTimeProperty().addListener(new InvalidationListener() {
 			public void invalidated(Observable ov) {
 				updateValues();
@@ -182,7 +191,7 @@ public class VideoPlayer extends Application {
 		mediaBar.getChildren().add(timeLabel);
 
 		// Add time slider
-		timeSlider = new Slider();
+		timeSlider = new Slider();	
 		HBox.setHgrow(timeSlider, Priority.ALWAYS);
 		timeSlider.setMinWidth(50);
 		timeSlider.setMaxWidth(Double.MAX_VALUE);
@@ -191,9 +200,15 @@ public class VideoPlayer extends Application {
 			public void invalidated(Observable ov) {
 				if (timeSlider.isValueChanging()) {
 					player.seek(duration.multiply(timeSlider.getValue() / 100.0));
+					if (timeSlider.getValue() == 0.0)
+						btnVolume.setGraphic(imgMute);
+					if (timeSlider.getValue() == 100.0)
+						btnVolume.setGraphic(imgVolume);
+
 				}
 			}
 		});
+		
 		mediaBar.getChildren().add(timeSlider);
 
 		// Add Play label
@@ -204,10 +219,14 @@ public class VideoPlayer extends Application {
 		mediaBar.getChildren().add(playTime);
 
 
+		/*
 		// Add the volume label
 		Label volumeLabel = new Label("Vol: ");
 		volumeLabel.setTextFill(TextColor);
 		mediaBar.getChildren().add(volumeLabel);
+		*/
+
+		mediaBar.getChildren().add(btnVolume());
 
 		// Add Volume slider
 		volumeSlider = new Slider();
@@ -285,7 +304,7 @@ public class VideoPlayer extends Application {
 		toolbar.getChildren().addAll(lblStatus);
 		toolbar.alignmentProperty().isBound();
 		toolbar.setPadding(new Insets(5, 10, 5, 10));
-		toolbar.setStyle("-fx-background-color: rgba(153, 255, 255, .1);");
+		toolbar.setStyle(ToolStyle);
 		BorderPane.setAlignment(toolbar, Pos.CENTER);
 		return toolbar;
 	}
@@ -554,6 +573,40 @@ public class VideoPlayer extends Application {
 		return btnFullscreen;
 	}
 
+	//button volume
+	private Button btnVolume() {
+		btnVolume.setStyle(ButtonStyle);
+		btnVolume.setCursor(buttonCursor);
+		btnVolume.setTooltip(new Tooltip("Volume"));
+
+		btnVolume.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+
+				if (event.getButton() == MouseButton.PRIMARY) 
+				{
+					if (VolumeFlag) {
+						btnVolume.setGraphic(imgMute);
+						player.setVolume(0);
+						VolumeFlag = false;
+					}
+					else
+					{
+						btnVolume.setGraphic(imgVolume);
+						player.setVolume(100);
+						VolumeFlag = true;
+					}
+					
+				}
+
+			}
+		});
+		return btnVolume;
+	}
+	
+	
+	
 	//media view fill primary stage
 	public void setFill() {
 		final DoubleProperty width = view.fitWidthProperty();
@@ -620,8 +673,8 @@ public class VideoPlayer extends Application {
 	private void setStatus(String status) {
 		lblStatus.setText("  Status : " + status);
 		lblStatus.setTextFill(TextColor);
-		lblStatus.setPrefSize(100, 30);
-		lblStatus.setStyle("-fx-border-color: red; -fx-background-color: rgba(153, 255, 255, 0.1);");
+		lblStatus.setPrefSize(90, 30);
+		lblStatus.setStyle("-fx-border-color: white; -fx-background-color: rgba(153, 255, 255, 0);");
 	}
 
 }
