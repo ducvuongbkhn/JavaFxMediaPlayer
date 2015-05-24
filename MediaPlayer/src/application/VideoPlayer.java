@@ -78,6 +78,7 @@ public class VideoPlayer extends Application {
 		primaryStage.show();
 		setFill();
 		player.play();
+		view.setCursor(Cursor.HAND);
 		FlagPlay = true;
 		updateStatus();
 
@@ -537,7 +538,15 @@ public class VideoPlayer extends Application {
 				{
 					primaryStage.setFullScreen(!primaryStage.isFullScreen());                     
 					if (primaryStage.isFullScreen()) 
+					{
+						view.setCursor(Cursor.NONE);
 						slideOut.play();
+					}
+					else 
+					{
+						view.setCursor(Cursor.HAND);
+						slideIn.play();
+					}
 				}
 			}
 		});
