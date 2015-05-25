@@ -706,6 +706,25 @@ public class VideoPlayer extends Application {
 				
 			}
 		});
+		
+		btn.setOnMousePressed(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				btn.setEffect(new DropShadow(30, Color.AQUA));
+				
+			}
+		});
+		
+		btn.setOnMouseReleased(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				btn.setStyle("-fx-background-color: transparent;");
+				
+			}
+		});
+
 	}
 
 }
