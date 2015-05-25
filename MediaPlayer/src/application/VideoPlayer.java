@@ -21,6 +21,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -67,6 +68,7 @@ public class VideoPlayer extends Application {
 	String ButtonStyle = "-fx-background-color: rgba(153, 255, 255, 0);";
 	String ToolStyle = "-fx-background-color: rgba(0, 0, 0, .7);";
 	Cursor buttonCursor = Cursor.HAND;
+	DropShadow shadow = new DropShadow(20, Color.WHITE);
 
 	//image
 	private ImageView imgOpen = new ImageView(new Image(getClass().getResourceAsStream("/Icon/Open.png")));
@@ -316,6 +318,7 @@ public class VideoPlayer extends Application {
 		btnOpen.setCursor(buttonCursor);
 		btnOpen.setTooltip(new Tooltip("Open"));
 		btnOpen.setGraphic(imgOpen);
+		setEffectButton(btnOpen);
 
 		btnOpen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -407,6 +410,7 @@ public class VideoPlayer extends Application {
 		btnPlay.setCursor(buttonCursor);
 		btnPlay.setTooltip(new Tooltip("Play"));
 		btnPlay.setGraphic(imgPlay);
+		setEffectButton(btnPlay);
 
 		btnPlay.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -431,6 +435,7 @@ public class VideoPlayer extends Application {
 		btnPause.setCursor(buttonCursor);
 		btnPause.setTooltip(new Tooltip("Pause"));
 		btnPause.setGraphic(imgPause);
+		setEffectButton(btnPause);
 
 		btnPause.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -455,6 +460,7 @@ public class VideoPlayer extends Application {
 		btnBack.setCursor(buttonCursor);
 		btnBack.setTooltip(new Tooltip("Back"));
 		btnBack.setGraphic(imgBack);
+		setEffectButton(btnBack);
 
 		btnBack.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -479,6 +485,7 @@ public class VideoPlayer extends Application {
 		btnForward.setCursor(buttonCursor);
 		btnForward.setTooltip(new Tooltip("Forward"));
 		btnForward.setGraphic(imgForward);
+		setEffectButton(btnForward);
 
 		btnForward.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -502,6 +509,7 @@ public class VideoPlayer extends Application {
 		btnStop.setCursor(buttonCursor);
 		btnStop.setTooltip(new Tooltip("Stop"));
 		btnStop.setGraphic(imgStop);
+		setEffectButton(btnStop);
 
 		btnStop.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -526,6 +534,7 @@ public class VideoPlayer extends Application {
 		btnReload.setCursor(buttonCursor);
 		btnReload.setTooltip(new Tooltip("Reload"));
 		btnReload.setGraphic(imgReload);
+		setEffectButton(btnReload);
 
 		btnReload.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -549,6 +558,7 @@ public class VideoPlayer extends Application {
 		btnFullscreen.setCursor(buttonCursor);
 		btnFullscreen.setTooltip(new Tooltip("Full Screen"));
 		btnFullscreen.setGraphic(imgFullscreen);
+		setEffectButton(btnFullscreen);
 
 		btnFullscreen.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -578,6 +588,7 @@ public class VideoPlayer extends Application {
 		btnVolume.setStyle(ButtonStyle);
 		btnVolume.setCursor(buttonCursor);
 		btnVolume.setTooltip(new Tooltip("Volume"));
+		setEffectButton(btnVolume);
 
 		btnVolume.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 
@@ -675,6 +686,26 @@ public class VideoPlayer extends Application {
 		lblStatus.setTextFill(TextColor);
 		lblStatus.setPrefSize(90, 30);
 		lblStatus.setStyle("-fx-border-color: white; -fx-background-color: rgba(153, 255, 255, 0);");
+	}
+	
+	//effect shadow button
+	private void setEffectButton(Button btn) {
+		btn.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				btn.setEffect(shadow);
+				
+			}
+		});
+		btn.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				btn.setEffect(null);
+				
+			}
+		});
 	}
 
 }
