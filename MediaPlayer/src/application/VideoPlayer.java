@@ -328,7 +328,7 @@ public class VideoPlayer extends Application {
 				if (event.getButton() == MouseButton.PRIMARY) 
 				{
 					FileChooser fc = new FileChooser();
-					fc.getExtensionFilters().add(new ExtensionFilter("Media File", "*.flv", "*.mp4", "*.mpeg", "*.*"));
+					fc.getExtensionFilters().add(new ExtensionFilter("Media File", "*.mp4", "*.aac", "*.m4a", "*.m4v", "*.wav", "*.mp3"));
 					File file = fc.showOpenDialog(null);
 					String path = file.getAbsolutePath();
 					path = path.replace("\\", "/");
